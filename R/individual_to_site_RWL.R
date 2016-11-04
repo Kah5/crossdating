@@ -28,13 +28,13 @@ wood <- "ring width"
 file_names = list.files(paste0(workingdir, sitefolder))
 file_names = file_names[ grepl(paste0( wood ,".rwl"),file_names)]
 full_filenames <- paste0(workingdir, sitefolder,'/',file_names)
-#files = read.rwl("COR/COR-1978-1-1-b-ring width.rwl", header = T)
-#file2 = read.rwl( "COR/COR-1978-1-1-b-ring width.rwl", header = T)
 
-combined <- combine.rwl(list(files, file2))
+
+combined <- combine.rwl(files)
+
+files = lapply(full_filenames, read.rwl, header=T)
 
 write.tucson(rwl.df = combined, fname = "COR.rwl", format = "tucson", append = FALSE, prec = 0.001)
 
-# Step 4: use lapply to apply the read.csv function to all values of file_names
-files = lapply(file_names, read.rwl, header=T)
-files = do.call(combine.rwl,files)
+
+

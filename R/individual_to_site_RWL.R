@@ -5,22 +5,26 @@
 
 # before running this script, export the rwl sites of choice to this working directory (preferred). 
 # to export, go into tellervo -> export data/metadata -> select Tucson (unstacked) and save into this directory
-
-library(dplR)
-# read in all files that have "whole wood"
-#set the working directory:
-
-setwd("C:/Users/JMac/Documents/Kelly/crossdating/data")
-workingdir <- getwd()
-
 ##############################
 # NEED TO CHANGE FOR EACH SITE
 # name the site folder & include '/' before
 ##############################
 
-sitefolder <- "/COR"
+#note you need the front slash before the folder name
+sitename <- "UNC"#change this to the name of the folder you just created
 
-wood <- "ring width"
+sitefolder <- paste0("/", sitename) 
+
+library(dplR)
+# read in all files that have "whole wood"
+#set the working directory:
+
+setwd("C:/Documents and Settings/user/My Documents/crossdating/data")
+workingdir <- getwd()
+
+
+
+wood <- "ring width" # this can be changed if we want to do 
 
 # get all the file names with "ring width"
 # we can do this for earlywood & latewood too, by changing the wood to earlywood/latewood width
@@ -30,11 +34,15 @@ file_names = file_names[ grepl(paste0( wood ,".rwl"),file_names)]
 full_filenames <- paste0(workingdir, sitefolder,'/',file_names)
 
 
+
+# read all the files in the directory in as rwl files
+files = lapply(full_filenames, read.rwl, header=T) 
+
+# combine all the files into one rwl file for COFECHA crossdating
 combined <- combine.rwl(files)
 
-files = lapply(full_filenames, read.rwl, header=T)
-
-write.tucson(rwl.df = combined, fname = "COR.rwl", format = "tucson", append = FALSE, prec = 0.001)
+#this will write into the cofecha folder within the data folder
+write.tucson(rwl.df = combined, fname = paste0("cofecha/",sitename,".rwl"), format = "tucson", append = FALSE, prec = 0.001)
 
 
 

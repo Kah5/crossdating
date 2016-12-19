@@ -11,7 +11,7 @@
 ##############################
 
 #note you need the front slash before the folder name
-sitename <- "UNC"#change this to the name of the folder you just created
+sitename <- "/UNI"#change this to the name of the folder you just created
 
 sitefolder <- paste0("/", sitename) 
 

@@ -11,7 +11,7 @@
 ##############################
 
 #note you need the front slash before the folder name
-sitename <- "/PVC"#change this to the name of the folder you just created
+sitename <- "COR"#change this to the name of the folder you just created
 
 sitefolder <- paste0("/", sitename) 
 
@@ -20,7 +20,7 @@ library(dplR)
 #set the working directory:
 
 #setwd("C:/Documents and Settings/user/My Documents/crossdating/data")
-setwd("C:/Users/JMac/Documents/Kelly/crossdating/data")
+setwd("/Users/kah/Documents/crossdating/data")
 workingdir <- getwd()
 
 
@@ -43,7 +43,7 @@ files = lapply(full_filenames, read.rwl, header=T)
 combined <- combine.rwl(files)
 
 # special case to rename the PVC values
-if(sitename == "/PVC"){
+if(sitename == "PVC"){
   new <- colnames(combined)
   
     for(i in 1:length(file_names)){
@@ -54,27 +54,41 @@ if(sitename == "/PVC"){
       place <- substring(file_names[i], first = 1, 3)
       new[i] <- paste0(place, tree, core)
       
+
       }else{
         if(i > 8){
+          
         core <- substring(file_names[i], first = 12, 12)
         tree <- substring(file_names[i], first = 5, 5)
         place <- substring(file_names[i], first = 1, 3)
         new[i] <- paste0(place, tree, core)
+        
         }else{
-          # for the one core that has a wierd naming structure:"PVC-1869-c-1-1-ring width.rwl"
-          core <- substring(file_names[i], first = 10, 10)
-          tree <- "10"
-          place <- substring(file_names[i], first = 1, 3)
-          new[i] <- paste0(place, tree, core)
+          new[i] <- NA
           
-        }
-      }
-    }
-    
-    colnames(combined) <- new
-  }else{
-    colnames(combined)
-  }
+          
+         }}}}else{
+            if(sitename == "COR"){
+          new <- colnames(combined)
+          
+          for(i in 1:length(file_names)){
+           
+              
+              core <- substring(file_names[i], first = 14, 14)
+              tree <- substring(file_names[i], first = 6, 8)
+              place <- substring(file_names[i], first = 1, 3)
+              new[i] <- paste0(place, tree, core)
+              
+          }
+          
+            colnames(combined) <- new
+                }else{if(! sitename %in% c("COR", "PVC")){
+                  
+            colnames(combined)}}}
+              
+
+
+
 #this will write into the cofecha folder within the data folder
 write.tucson(rwl.df = combined, fname = paste0("cofecha/",sitename,".rwl"), format = "tucson",long.names = TRUE, prec = 0.001)
 

@@ -11,7 +11,7 @@
 ##############################
 
 #note you need the front slash before the folder name
-sitename <- "COR"#change this to the name of the folder you just created
+sitename <- "UNC"#change this to the name of the folder you just created
 
 sitefolder <- paste0("/", sitename) 
 
@@ -69,28 +69,38 @@ if(sitename == "PVC"){
           
          }}}}else{
             if(sitename == "COR"){
-          new <- colnames(combined)
+                new <- colnames(combined)
           
-          for(i in 1:length(file_names)){
+            for(i in 1:length(file_names)){
            
               
-              core <- substring(file_names[i], first = 14, 14)
-              tree <- substring(file_names[i], first = 6, 8)
-              place <- substring(file_names[i], first = 1, 3)
-              new[i] <- paste0(place, tree, core)
+                core <- substring(file_names[i], first = 14, 14)
+                tree <- substring(file_names[i], first = 6, 8)
+                place <- substring(file_names[i], first = 1, 3)
+                new[i] <- paste0(place, tree, core)
               
           }
           
             colnames(combined) <- new
-                }else{if(! sitename %in% c("COR", "PVC")){
+                }else{
+                  if(sitename == "STC"){
+                  combined <- combined[ row.names(combined)>= 1879, ] }
                   
-            colnames(combined)}}}
+                  else{if(! sitename %in% c("COR", "PVC", "STC")){
+                  
+            colnames(combined)}}}}
               
 
 
 
 #this will write into the cofecha folder within the data folder
-write.tucson(rwl.df = combined, fname = paste0("cofecha/",sitename,".rwl"), format = "tucson",long.names = TRUE, prec = 0.001)
-
+if(wood == "ring width"){
+  
+  write.tucson(rwl.df = combined, fname = paste0("cofecha/",sitename,".rwl"), format = "tucson", long.names = TRUE, prec = 0.001)
+  }else{
+    
+    write.tucson(rwl.df = combined, fname = paste0("cofecha/",sitename,wood,".rwl"), format = "tucson", long.names = TRUE, prec = 0.001)
+    
+  }
 
 
